@@ -2,8 +2,8 @@ import web
 
 from web.wsgiserver import CherryPyWSGIServer
 
-CherryPyWSGIServer.ssl_certificate = "/home/brob695/ssl_certs/docs.crt"
-CherryPyWSGIServer.ssl_private_key = "/home/brob695/ssl_certs/docs.key"
+CherryPyWSGIServer.ssl_certificate = "/home/brob695/docgen-server/ssl_certs/docs.crt"
+CherryPyWSGIServer.ssl_private_key = "/home/brob695/docgen-server/ssl_certs/docs.key"
 
 urls = (
     '/', 'index'
