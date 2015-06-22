@@ -1,0 +1,7 @@
+*.pyc
+ssl_certs/*.crt
+ssl_certs/*.csr
+ssl_certs/*.key
+ssl_certs/*.p12
+ssl_certs/*.pem
+ssl_certs/*.srl

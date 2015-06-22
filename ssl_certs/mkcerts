@@ -1,0 +1,26 @@
+#!/bin/bash
+
+openssl_exe="/usr/bin/openssl"
+server="docs"
+clients=(pan fitzroy foster beatrice kerr popper)
+strength=4096
+length=365
+
+for host in ${server} ${clients[*]}
+do
+	echo "Generating an RSA key for host \"${host}\" ..."
+	${openssl_exe} genrsa -out ${host}.key ${strength}
+done
+
+# Make a new root certificate for the server
+echo "Generating a root CA certificate for host \"${server}\" ..."
+${openssl_exe} req -x509 -new -days ${length} -key ${server}.key -out ${server}.crt
+
+for client in ${clients[*]}
+do
+	echo "Generating a client certificate bundle for host \"${client}\" ..."
+	${openssl_exe} req -new -key ${client}.key -out ${client}.csr
+	${openssl_exe} x509 -req -days ${length} -in ${client}.csr -CA ${server}.crt -CAkey ${server}.key -CAcreateserial -out ${client}.crt
+	${openssl_exe} pkcs12 -export -clcerts -in ${client}.crt -inkey ${client}.key -out ${client}.p12
+	${openssl_exe} pkcs12         -clcerts -in ${client}.p12                      -out ${client}.pem
+done
