@@ -1,9 +1,13 @@
 import web
-
 from web.wsgiserver import CherryPyWSGIServer
+from ClientCertCapableSSLAdapter import ClientCertCapableSSLAdapter
 
-CherryPyWSGIServer.ssl_certificate = "/home/brob695/docgen-server/ssl_certs/docs.crt"
-CherryPyWSGIServer.ssl_private_key = "/home/brob695/docgen-server/ssl_certs/docs.key"
+CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = "ssl_certs/docs.crt",
+                                                             private_key = "ssl_certs/docs.key",
+                                                             certificate_chain = None,
+                                                             client_CA = 'ssl_certs/docs.crt',
+                                                             client_check = 'required',
+                                                             check_host = False)
 
 urls = (
     '/', 'index'
