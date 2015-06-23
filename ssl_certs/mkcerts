@@ -16,11 +16,17 @@ done
 echo "Generating a root CA certificate for host \"${server}\" ..."
 ${openssl_exe} req -x509 -new -days ${length} -key ${server}.key -out ${server}.crt
 
+# Make client certificates for the clients
 for client in ${clients[*]}
 do
-	echo "Generating a client certificate bundle for host \"${client}\" ..."
+	echo "Generating a client certificate for host \"${client}\" ..."
 	${openssl_exe} req -new -key ${client}.key -out ${client}.csr
 	${openssl_exe} x509 -req -days ${length} -in ${client}.csr -CA ${server}.crt -CAkey ${server}.key -CAcreateserial -out ${client}.crt
-	${openssl_exe} pkcs12 -export -clcerts -in ${client}.crt -inkey ${client}.key -out ${client}.p12
-	${openssl_exe} pkcs12         -clcerts -in ${client}.p12                      -out ${client}.pem
+done
+
+for host in ${server} ${clients[*]}
+do
+	echo "Generating a certificate bundle for host \"${host}\" ..."
+	${openssl_exe} pkcs12 -export -clcerts -in ${host}.crt -inkey ${host}.key -out ${host}.p12
+	${openssl_exe} pkcs12         -clcerts -in ${host}.p12                    -out ${host}.pem
 done
