@@ -112,7 +112,8 @@ class ClientCertCapableSSLAdapter(wsgiserver.SSLAdapter):
                     # The client is speaking some non-HTTP protocol.
                     # Drop the conn.
                     return None, {}
-            raise
+            print "SSL Error:{}".format(e.reason)
+            return None, {}
         return s, self.get_environ(s)
 
     # TODO: fill this out more with mod ssl env
