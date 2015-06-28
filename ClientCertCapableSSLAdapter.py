@@ -112,7 +112,10 @@ class ClientCertCapableSSLAdapter(wsgiserver.SSLAdapter):
                     # The client is speaking some non-HTTP protocol.
                     # Drop the conn.
                     return None, {}
-            print "SSL Error:{}".format(e.reason)
+            try:
+                print "SSL error: {}".format(e.reason)
+            except AttributeError:
+                print "An unreasonable SSL error occurred."
             return None, {}
         return s, self.get_environ(s)
 
