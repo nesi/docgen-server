@@ -16,7 +16,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="documentation generation web server"
 NAME=docgen-server
 DAEMON="/usr/bin/python"
-DAEMON_ARGS="/opt/${NAME}/server.py"
+DAEMON_ARGS="/opt/${NAME}/server.py 443"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 

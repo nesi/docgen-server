@@ -1,13 +1,31 @@
+# server.py
+#
+# A web server for receiving uploads of software module lists from NeSI
+# clusters. Uses web.py.
+#
+# Written by Benjamin Roberts, 2015
+
+import os
+import sys
 import web
 from web.wsgiserver import CherryPyWSGIServer
 from ClientCertCapableSSLAdapter import ClientCertCapableSSLAdapter
 
-CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = "ssl_certs/docs.crt",
-                                                             private_key = "ssl_certs/docs.key",
+CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = os.path.join("ssl_certs","docs.crt"),
+                                                             private_key = os.path.join("ssl_certs","docs.key"),
                                                              certificate_chain = None,
-                                                             client_CA = 'ssl_certs/docs.crt',
+                                                             client_CA = os.path.join("ssl_certs","docs.crt"),
                                                              client_check = 'required',
                                                              check_host = False)
+
+if (os.geteuid() == 0):
+    logdir = os.path.join(os.sep, "var", "log")
+else:
+    logdir = os.path.expanduser("~")
+logfile = os.path.join(logdir, "docgen-server.log")
+logfilehandle = open(logfile, 'a')
+#sys.stdout = logfilehandle
+#sys.stderr = logfilehandle
 
 render = web.template.render('templates/')
 urls = (
@@ -37,3 +55,5 @@ class upload:
 if __name__ == "__main__":
     app = web.application(urls, globals())
     app.run()
+
+logfilehandle.close()
