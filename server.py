@@ -29,7 +29,7 @@ logfilehandle = open(logfile, 'a', 0)
 sys.stdout = logfilehandle
 sys.stderr = logfilehandle
 
-render = web.template.render(os.path.join(basedir,"templates",os.sep)
+render = web.template.render(os.path.join(basedir,"templates",os.sep))
 urls = (
     '/', 'index',
     '/(pan|fitzroy|beatrice|kerr|foster|popper)', 'upload'
