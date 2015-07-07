@@ -29,7 +29,9 @@ logfilehandle = open(logfile, 'a', 0)
 sys.stdout = logfilehandle
 sys.stderr = logfilehandle
 
-render = web.template.render(os.path.join(basedir,"templates",os.sep))
+templatedir = os.path.join(basedir,"templates")
+print "Template directory: {}".format(templatedir)
+render = web.template.render(templatedir)
 urls = (
     '/', 'index',
     '/(pan|fitzroy|beatrice|kerr|foster|popper)', 'upload'
@@ -52,7 +54,7 @@ class upload:
             fout = open(os.path.join(filedir,foutname),'w') # creates the file where the uploaded file should be stored
             fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
             fout.close() # closes the file, upload complete.
-        raise web.seeother(os.path.join(os.sep,"upload"))
+        raise web.seeother("/upload")
 
 
 if __name__ == "__main__":
