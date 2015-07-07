@@ -30,7 +30,6 @@ sys.stdout = logfilehandle
 sys.stderr = logfilehandle
 
 templatedir = os.path.join(basedir,"templates")
-print "Template directory: {}".format(templatedir)
 render = web.template.render(templatedir)
 urls = (
     '/', 'index',
