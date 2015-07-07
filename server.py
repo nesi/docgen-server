@@ -11,10 +11,12 @@ import web
 from web.wsgiserver import CherryPyWSGIServer
 from ClientCertCapableSSLAdapter import ClientCertCapableSSLAdapter
 
-CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = os.path.join("/opt/docgen-server/ssl_certs","docs.crt"),
-                                                             private_key = os.path.join("/opt/docgen-server/ssl_certs","docs.key"),
+basedir = os.path.dirname(os.path.realpath(__file__))
+
+CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = os.path.join(basedir,"ssl_certs","docs.crt"),
+                                                             private_key = os.path.join(basedir,"ssl_certs","docs.key"),
                                                              certificate_chain = None,
-                                                             client_CA = os.path.join("/opt/docgen-server/ssl_certs","docs.crt"),
+                                                             client_CA = os.path.join(basedir,"ssl_certs","docs.crt"),
                                                              client_check = 'required',
                                                              check_host = False)
 
@@ -27,7 +29,10 @@ logfilehandle = open(logfile, 'a', 0)
 sys.stdout = logfilehandle
 sys.stderr = logfilehandle
 
-render = web.template.render('/opt/docgen-server/templates/')
+print "File: {}".format(__file__)
+raise SystemExit(0)
+
+render = web.template.render(os.path.join(basedir,"templates",os.sep)
 urls = (
     '/', 'index',
     '/(pan|fitzroy|beatrice|kerr|foster|popper)', 'upload'
@@ -44,12 +49,13 @@ class upload:
 
     def POST(self, name):
         x = web.input(myfile={})
-        filedir = '/var/www/module-uploads' # change this to the directory you want to store the file in.
+        filedir = os.path.join(os.sep,"var","www","module-uploads") # change this to the directory you want to store the file in.
         if 'myfile' in x: # to check if the file-object is created
-            fout = open(filedir +'/'+ name + '.txt','w') # creates the file where the uploaded file should be stored
+            foutname = name + '.txt'
+            fout = open(os.path.join(filedir,foutname),'w') # creates the file where the uploaded file should be stored
             fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
             fout.close() # closes the file, upload complete.
-        raise web.seeother('/upload')
+        raise web.seeother(os.path.join(os.sep,"upload"))
 
 
 if __name__ == "__main__":
