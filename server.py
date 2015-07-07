@@ -29,9 +29,6 @@ logfilehandle = open(logfile, 'a', 0)
 sys.stdout = logfilehandle
 sys.stderr = logfilehandle
 
-print "File: {}".format(__file__)
-raise SystemExit(0)
-
 render = web.template.render(os.path.join(basedir,"templates",os.sep)
 urls = (
     '/', 'index',
@@ -61,5 +58,3 @@ class upload:
 if __name__ == "__main__":
     app = web.application(urls, globals())
     app.run()
-
-#logfilehandle.close()
