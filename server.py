@@ -11,10 +11,10 @@ import web
 from web.wsgiserver import CherryPyWSGIServer
 from ClientCertCapableSSLAdapter import ClientCertCapableSSLAdapter
 
-CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = os.path.join("ssl_certs","docs.crt"),
-                                                             private_key = os.path.join("ssl_certs","docs.key"),
+CherryPyWSGIServer.ssl_adapter = ClientCertCapableSSLAdapter(certificate = os.path.join("/opt/docgen-server/ssl_certs","docs.crt"),
+                                                             private_key = os.path.join("/opt/docgen-server/ssl_certs","docs.key"),
                                                              certificate_chain = None,
-                                                             client_CA = os.path.join("ssl_certs","docs.crt"),
+                                                             client_CA = os.path.join("/opt/docgen-server/ssl_certs","docs.crt"),
                                                              client_check = 'required',
                                                              check_host = False)
 
@@ -23,11 +23,11 @@ if (os.geteuid() == 0):
 else:
     logdir = os.path.expanduser("~")
 logfile = os.path.join(logdir, "docgen-server.log")
-logfilehandle = open(logfile, 'a')
-#sys.stdout = logfilehandle
-#sys.stderr = logfilehandle
+logfilehandle = open(logfile, 'a', 0)
+sys.stdout = logfilehandle
+sys.stderr = logfilehandle
 
-render = web.template.render('templates/')
+render = web.template.render('/opt/docgen-server/templates/')
 urls = (
     '/', 'index',
     '/(pan|fitzroy|beatrice|kerr|foster|popper)', 'upload'
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     app = web.application(urls, globals())
     app.run()
 
-logfilehandle.close()
+#logfilehandle.close()
