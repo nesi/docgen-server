@@ -97,6 +97,7 @@ class ClientCertCapableSSLAdapter(wsgiserver.SSLAdapter):
                                     certfile=self.certificate,
                                     keyfile=self.private_key,
                                     ssl_version=ssl.PROTOCOL_SSLv23)
+            return s, self.get_environ(s)
         except ssl.SSLError:
             e = sys.exc_info()[1]
             if e.errno == ssl.SSL_ERROR_EOF:
@@ -117,7 +118,8 @@ class ClientCertCapableSSLAdapter(wsgiserver.SSLAdapter):
             except AttributeError:
                 print "An unreasonable SSL error occurred."
             return None, {}
-        return s, self.get_environ(s)
+        except Exception as e:
+          print e
 
     # TODO: fill this out more with mod ssl env
     def get_environ(self, sock):
