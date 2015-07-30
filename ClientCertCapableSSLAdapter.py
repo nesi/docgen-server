@@ -120,6 +120,7 @@ class ClientCertCapableSSLAdapter(wsgiserver.SSLAdapter):
             return None, {}
         except Exception as e:
           print e
+          return None, {}
 
     # TODO: fill this out more with mod ssl env
     def get_environ(self, sock):
