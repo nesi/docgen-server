@@ -2,7 +2,8 @@
 
 openssl_exe="/usr/bin/openssl"
 server="docs"
-clients=(pan fitzroy foster beatrice kerr popper)
+#clients=(pan fitzroy foster beatrice kerr popper)
+clients=(pan fitzroy)
 strength=4096
 length=365
 
