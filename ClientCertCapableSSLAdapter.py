@@ -1,6 +1,7 @@
 import socket, errno
 import ssl
 import sys
+import traceback
 
 try:
     from _pyio import DEFAULT_BUFFER_SIZE
@@ -116,11 +117,11 @@ class ClientCertCapableSSLAdapter(wsgiserver.SSLAdapter):
             try:
                 print "SSL error: {}".format(e.reason)
             except AttributeError:
-                print "An unreasonable SSL error occurred."
+                traceback.print_exc()
             return None, {}
         except Exception as e:
-          print e
-          return None, {}
+            traceback.print_exc()
+            return None, {}
 
     # TODO: fill this out more with mod ssl env
     def get_environ(self, sock):
