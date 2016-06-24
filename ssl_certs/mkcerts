@@ -31,3 +31,15 @@ do
 	${openssl_exe} pkcs12 -export -clcerts -in ${host}.crt -inkey ${host}.key -out ${host}.p12
 	${openssl_exe} pkcs12         -clcerts -in ${host}.p12                    -out ${host}.pem
 done
+
+echo ""
+echo "New certificates for the documentation workflow have been generated."
+echo "To deploy them, please do the following:"
+echo ""
+echo "      * Commit necessary changes to the docgen-server git repo"
+echo "      * Commit the *.pem files to the docgen-client git repo and check"
+echo "        it out for uploaders"
+echo "      * Ensure that each uploader has a copy of the *.key file"
+echo "        appropriate to that particular cluster"
+echo ""
+echo ""
